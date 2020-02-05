@@ -1,0 +1,30 @@
+##https://github.com/fivethirtyeight/data/tree/master/us-weather-history
+# install tidyverse package
+install.packages(tidyverse)
+
+# pull library from tidyverse package
+library(tidyverse)
+
+# create a variable for the weather url for the raw data
+weather_url <- "https://raw.githubusercontent.com/fivethirtyeight/data/master/us-weather-history/KSEA.csv"
+
+# download the .csv file from the url and naming the data weather_info.csv
+download.file(weather_url, "weather_info.csv")
+
+#reading the dowloaded variable into a weather_df data frame variable
+weather_df <- read.csv("weather_info.csv")
+
+#Summarizes the weather_df data frame; The observed features show that there are 12 continous  and 1 descriptive data option that could be trasformed into a continous data option. +
+# the data set desribes the mean, min and max of multiple variables (record, actual and average) in which they view the temperature in a data set. 
+summary(weather_df)
+
+# creating variables for each of the columns that we will be testing against
+record_tmp_max <-weather_df$record_max_temp
+
+actual_tmp_max <-weather_df$actual_max_temp
+
+# Plotting the correlation between record max temperature and actual max temperature for the day. 
+plot(record_tmp_max, actual_tmp_max, xlab = "Record Max Temperature", ylab = "Actual Max Temperature", main = "Record vs Actual correlation for Max Temperature", col = "red", lwd = 2)
+abline(lm(record_tmp_max ~ actual_tmp_max))
+
+#Final output observes that the record and actual max temperature are correlated but there is a downshoft towards record temperature as expected.
