@@ -204,5 +204,15 @@ library(tidyr)  - spread & gather data to fix raw data
 ## this will take rows that do not belong and move the to Columns.
 wide_pop_df<-pivot_wide(data=pop_df, names_from='Series',values_from='Value')
 
+Going to other direction, pivot_longer() 
+Used for presentation.
+long_mri_df<-pivot_longer(data=mri_bf,cols=c('age','male','race','weight'),names_to='DemoInfo', values_to='Value')
+
+using the %>% pipe
+pop_df %>% pivot_wider(names_from='Series', values_from='Value')
+%>%  pipe -- Redirect
+x %>% f(y)   is the same as 
+f(x,y)
+
 
 
