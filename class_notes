@@ -180,3 +180,29 @@ Error in open.connection(f) : invalid connection
 ## plot()
 ## barplot()
 ## hist(plot)
+
+
+WEEK 4  ( Feb 11 )
+R-markdown & knitr
+
+```{r cars}
+{summary (cars)
+```
+
+Assignment, render to PDF
+
+Find Three biological data sources that you can use for your first project. 
+For each write about why you find the dataset interesting, anticipated difficulties, 
+and a question you would like to answer. Perform a precursory exploration 
+(types and amount of different variables and a simple graph) for each dataset
+and turn in an R Markdown document.
+
+library(tidyr)  - spread & gather data to fix raw data
+## Columns are variables, each row has the same kinds of data.   
+## Tidy data is good for analysis
+
+## this will take rows that do not belong and move the to Columns.
+wide_pop_df<-pivot_wide(data=pop_df, names_from='Series',values_from='Value')
+
+
+
