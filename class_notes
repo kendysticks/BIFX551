@@ -214,5 +214,14 @@ pop_df %>% pivot_wider(names_from='Series', values_from='Value')
 x %>% f(y)   is the same as 
 f(x,y)
 
+library(dplyr)  
+Can filter rows, 
+arrange, 
+select (choose columns)
+mutate  (calculated columns)
+
+Notation to filter rows 1..input$range and columns 1..14
+ncov_df[c(1:input$range),c(1:14)]
+
 
 
