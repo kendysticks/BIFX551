@@ -223,5 +223,30 @@ mutate  (calculated columns)
 Notation to filter rows 1..input$range and columns 1..14
 ncov_df[c(1:input$range),c(1:14)]
 
+farming_df<-filter(swiss, Agriculture > 50)
+view(farming_df)
+# select some columns
+some_df<-select( farming_df, c(1,2,3 ))
 
+# Add a computed column
+swiss %>% mutate(Protestant=100-Catholic)
+
+## use iris to show groups and summary functions
+iris %>% group_by(Species) %>% summarise(mean_petal=mean(Petal.Length))
+
+# A tibble: 3 x 2
+#    Species    mean_petal
+#    <fct>           <dbl>
+#  1 setosa           1.46
+#  2 versicolor       4.26
+#  3 virginica        5.55
+
+> count_iris_df<-iris %>% group_by(Species) %>% summarise(count=n())
+> count_iris_df
+# A tibble: 3 x 2
+  Species    count
+  <fct>      <int>
+1 setosa        50
+2 versicolor    50
+3 virginica     50
 
