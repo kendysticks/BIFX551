@@ -68,10 +68,9 @@ Jan 21 | Welcome, Git/Github, R markdown | [Markdown](https://guides.github.com/
 Jan 28 | Basic R: man pages, basic functions, data frames, factor variables, and other data types |[Chapter 11: R4DS](https://r4ds.had.co.nz/data-import.html) | 1. Write your own function to convert between any two units. The function should take two arguments, a number, and an argument specifying the direction of the conversion. Include your function with documentation string in an R-markdown file 2. Load a builtin dataframe, you can see the list with data(). Use the summary function to write a short description of some interesting aspects of the dataframe. Write your results in an R-markdown file.
 Feb 4 | Basic R: Importing .txt and .csv, using packages, plotting with base R | [Chapter 2: RMDG](https://bookdown.org/yihui/rmarkdown/basics.html)| Find a csv or txt file, download it, read it into a dataframe, use summary() to describe it, and create a labeled graph. Submit as an .R file. It should run and produce your graph
 Feb 11 | R packages: knitr,tidyr/dplyr |[Chapter 5: R4DS](https://r4ds.had.co.nz/transform.html) & [Chapter 12: R4DS](https://r4ds.had.co.nz/tidy-data.html)| Find **Three** biological data sources that you can use for your first project. For each write about why you find the dataset interesting, anticipated difficulties, and a question you would like to answer. Perform a precursory exploration (types and amount of different variables and a simple graph) for each dataset and turn in an R Markdown document.
-Feb 18 | R packages: dplyr/tidyr, ggplot2 | |Start Project 1
-Feb 25 | R packages: ggplot2 | |
-Feb 26 | R packages: datetimes and loops | |
-Mar 3 | R packages: Unix environments | | Project 1: Summary Report Due
+Feb 18 | R packages: dplyr/tidyr, ggplot2 |[Chapter 3: R4DS](https://r4ds.had.co.nz/data-visualisation.html) |Start Project 1: 
+Feb 25 | R packages: ggplot2 & datetimes| |
+Mar 3 | R packages: Unix environments and loops | |Project 1: Summary Report Due
 Mar 10 | Spring Recess | | 
 Mar 17 | Unix environments and running scripts | |
 Mar 24 | Making an R package | |
