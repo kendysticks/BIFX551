@@ -301,4 +301,8 @@ Statistical Report
 - Confidence interval is preferred over P-value
 
 
+## cleaning up data
+EWS.T1 EWS.T2 EWS.T3 EWS.T4 ...EWS.T19   
+EWS_df <- khan_df %>% select(starts_with('EWS'))  ## ends_with() contains(literal string) matches(regular expression)
+CEWS_df<- khan_df %>% select(matches('*[\.T]*'))
 
