@@ -290,3 +290,15 @@ Volvo 142E          21.4   4 121.0 109 4.11 2.780 18.60  1  1    4    2
   <dbl> <int>
 1     0    19
 2     1    13
+
+
+Statistical Report
+- Data wrangling, and cleaning step
+- Exploritory Analysis
+- Model Building
+- Communication
+
+- Confidence interval is preferred over P-value
+
+
+
