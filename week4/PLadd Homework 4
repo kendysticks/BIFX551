@@ -1,0 +1,70 @@
+---
+title: "BIFX 551 Homework - Week 4"
+author: "Paula Ladd"
+date: "2/18/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Dataset 1 - Waterfowl Brood Data 2012-2013
+
+This is a dataset of observations of brood size, life stage, time, and location of various waterfowl.  It also includes codes for the 
+observer as well as notes about the observation.  While there's definitely some messyness about the location and notes data, this dataset 
+could draw some interesting observations about the relationship between species, time, and brood size, as this data is more consistent 
+across the dataset.
+
+This dataset is mostly qualitative data, but does have a quantitative measure of brood size.
+
+```{r}
+download.file("https://ecos.fws.gov/ServCat/DownloadFile/56761?Reference=55983", "waterfowl.csv")
+waterfowl <- read.csv("waterfowl.csv")
+
+head(waterfowl)
+summary(waterfowl)
+
+plot(waterfowl$X..of.chicks ~ waterfowl$Species)
+```
+
+## Dataset 2 - Quivira NWR Eagle Observations 1987-2009
+
+This dataset includes total observed number of bald and golden eagles (and one random osprey observation) on a given day at the Quivira 
+National Wildlife Reserve.  It also includes numerical data of the number of adult and juvenile individuals observed.  It does have places 
+for observer data and notes but the data is spotty.  The most reliable questions that this data could be useful in answering would be total
+observation of a species over time, as the life stage and location data are not realiably reported in this dataset.
+
+```{r}
+download.file("https://ecos.fws.gov/ServCat/DownloadFile/58701?Reference=57710", "eagle.csv")
+eagle <- read.csv("eagle.csv")
+
+head(eagle)
+summary(eagle)
+
+plot(eagle$Number ~ eagle$X.1)
+```
+
+## Dataset 3 - North American Bat Monitoring Program Acoustic Monitoring Survey on NWRs
+
+This dataset is on the accoustic data collected in a bat monitoring project in National Wildlife Refuges.  It has their SonoBat files and 
+observed information from the audiofiles (calls/sec, frequencies, audio quality), as well as locational information in logitude/latitude, 
+observer information, and technical information of the equipment and software used to take and analyze information.  
+
+This is my favorite dataset for two main reasons.  First, it was the only one were the numerical data uploaded in a way that R immediately 
+recognized as numerical data, which made it easier to immediately work with than the other two.  Second, despite some of the information 
+still being patchy, this has by far the most information in the dataset itself that would allow for these observations to be repeated.  By 
+including their observations in the audio file, their interpretation, and all of the equipment and software information, this is the only 
+dataset that I think would be extremely useful for other researchers to use.
+
+I decided to look at frequency of bat calls observed by the park locations at which observations were being taken.
+
+```{r}
+download.file("https://ecos.fws.gov/ServCat/DownloadFile/161176?Reference=108547", "bat.csv")
+bat <- read.csv("bat.csv")
+
+head(bat)
+summary(bat)
+
+plot(bat$calls.sec ~ bat$ParkCode)
+```
