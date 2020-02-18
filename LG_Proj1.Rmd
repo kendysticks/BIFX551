@@ -1,0 +1,43 @@
+# Data Source 1 - COVID-19 Master
+
+*Master list of confirmed cases of COVID-19 as of 17 Feb 2020*
+
+```
+url <- "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv"
+download.file(url, "COVID-19_confirmed")
+COVID_df <- read_csv("COVID-19_confirmed")
+COVID_Country <- COVID_df %>% filter(`Country/Region`=="Mainland China")
+summary(COVID_Country)
+barplot(COVID_Country$`2/17/20` ~ COVID_Country$`Province/State`)
+```
+
+I am interested in this data because I have been tracking the COVID-19 outbreak. My work is in infectious disease, and it's super fascinating to watch something like this happen in real time, with the resources we have available. It's a somewhat difficult data set to work with in that there are several variables that could be used, and I think I may have a hard time filtering down to a set that makes sense. Looking at the overall rate of infection would be interesting, but I would also like to focus in on one country/region, and how the various provinces of that region are affected.
+
+There are 31 variables, though most of them are dates, so the data set can be broken into date, country/region, province/state, and lattitude/longitude.
+
+
+# Data Source 2 - COVID-19 By day
+
+*Breakdown by day of confirmed cases, deaths, and recoveries of COVID-19*
+```
+url2 <- "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/02-17-2020.csv"
+download.file(url2, "COVId-19_latest")
+COVID_2 <- read_csv("COVID-19_latest")
+COVID_filter <- COVID_2 %>% drop_na("Province/State")
+barplot(COVID_filter$"Confirmed"~COVID_filter$"Province/State")
+```
+
+This data set is very similar to the previous one, however it has some additional information. It includes both deaths and recoveries, as well as confirmed cases. It also focuses only on one day's worth of information, which makes it a bit easier to work with. It would be interesting to look at a comparison of different places over one day, rather than trends in the overall outbreak.
+
+
+# Data Source 3 - Flu Infections in United States
+
+*Breakdown of Influenza infections, including subtype, and positive/negative tests*
+
+```
+url3 <- "https://raw.githubusercontent.com/lglang/Datasets/master/Flu2019-2020.csv"
+download.file(url3, "Flu2019")
+flu_df <- read_csv("Flu2019")
+plot(flu_df$ALL_INF ~ flu_df$Week)
+```
+This data set is interesting, as it breaks down flu cases several ways, by week, by flu type and subtype, and it gives overall stats on how many tests were performed, and how many were positive or negative. The flu is super prevalent in the United states, moreso than any other country, and being able to look at the data charted out could be helpful. It would be interesting to compare cases of Influenza A and B. Potential difficulties come from the inclusion of weeks 1-6 of 2020, although those could easily be removed. 
