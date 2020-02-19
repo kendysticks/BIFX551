@@ -306,3 +306,8 @@ EWS.T1 EWS.T2 EWS.T3 EWS.T4 ...EWS.T19
 EWS_df <- khan_df %>% select(starts_with('EWS'))  ## ends_with() contains(literal string) matches(regular expression)
 CEWS_df<- khan_df %>% select(matches('*[\.T]*'))
 
+
+GGPLOT2
+g<-ggplot(data=diamonds, mapping=aes(x=carat, y=price,color=color))+geom_point()
+print(g)
+g<-ggplot(data=diamonds, mapping=aes(x=carat, y=price,color=color,size=carat))+geom_point()
