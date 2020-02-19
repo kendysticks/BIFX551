@@ -27,4 +27,5 @@ Perform a fuller exploratory analysis on your dataset for your project. You shou
 - A plot with discrete variables
 - A plot where you use color or size to represent a quantity
 - A faceted plot
+
 Include text between your plots to tell a story about the data. What insights do these plots give us into your data?
