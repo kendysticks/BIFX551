@@ -29,3 +29,5 @@ Perform a fuller exploratory analysis on your dataset for your project. You shou
 - A faceted plot
 
 Include text between your plots to tell a story about the data. What insights do these plots give us into your data?
+
+Because you always need to rotate your text labels, and they don't make it easy: [Stack Overflow](https://stackoverflow.com/questions/1330989/rotating-and-spacing-axis-labels-in-ggplot2)
