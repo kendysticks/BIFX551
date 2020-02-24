@@ -1,0 +1,63 @@
+---
+title: "DMWeek5HW"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Destinee Morrow
+BIFX 551
+Week 5 Homework 
+
+Download data into CSV from website link to local drive.
+https://www.kaggle.com/uciml/horse-colic/download 
+A csv download link can be found, but the data was messier and would have required much more cleaning.
+Make sure to read in the csv file from previous download.
+
+I found this data set interesting because my Bachelors is in Animal Science and I didnt work too much with horses, so I'd like to learn some more.
+Some difficulties I think i may encounter is that some columns have alot of NA
+Overall, I would like to determine whether or not certain attributes can determine the outcome of colic.
+
+```{r Horse Colic}
+library(dplyr)
+library(ggplot2)
+
+horsecolic <- read.csv("Documents/Programming/horsecolic.csv")
+View(horsecolic)
+```
+
+This dataset had both quantatative and qualitative data.
+Having a total of 28 different coloumns including their unique ID.
+Data was cleaned and parsed differently in order to show various graphs. 
+
+Here is a sample bar chart showing the mean rectal temperatures of horses in comparison to the temperature of the of extremities to the touch. 
+As you can see below, there is barely any difference in the internal temperatures. Thus meaning, one should not rely on just feeling the outside of the horse to determine temperature. 
+
+```{r horse, echo=TRUE}
+temp <- horsecolic %>% group_by(temp_of_extremities) %>% summarize(mean = mean(rectal_temp, na.rm = TRUE))
+temp <- as.data.frame(temp)
+ggplot(temp, aes(temp_of_extremities,mean)) +geom_col() + xlab("Temperature of Extremities (Touch)") + ylab("Mean Rectal Temperature (Celsius)") + ggtitle("Internal Temperature as a function of External Temperature in Colic Horses")
+```
+
+This next graph looks at continuous data, pulse and respitory rate. I want to see if there is a correlation between the respitory rate, a good indication of distress, and the pulse. Were there any horses with a high respitory rate that had a lower pulse or vice versa. Or can respitory rate, an easily seen indicator, predict pulse?
+Below we can see that the majority of the horses have a respiratory rate under 50, with a pulse under 100. This is a clear indicater that the horse is in some sort of distress, as the normal RR is about 10 breaths per minute with a pulse of about 35 beats per minute. However, there many examples seen where a horse had a lower RR and very high pulse, or vice versa. Further analysis of these horses can be taken. 
+
+```{r horse pulse, echo=TRUE}
+ggplot(horsecolic, aes(respiratory_rate, pulse), na.rm=TRUE) +geom_point() + xlab("Respiratory Rate") + ylab("Pulse") + ggtitle("Pulse as a function of Respiratory Rate in Colic Horses")
+```
+
+The next graph below looks at packed cell volume. This is a quick blood test that could be used to then give further assesment of the horse. It appears that more than half of the sample size has a healthy PCV count, which is normally 33% to 50%. This would not be a good indicater of the severity of colic in horses.
+
+```{r horse PCV, echo=TRUE}
+ggplot(horsecolic, aes(packed_cell_volume)) + geom_histogram(bins = 25, aes(fill = packed_cell_volume < 40)) + scale_fill_manual(values = c("blue","red")) + xlab("Packed Cell Volume") +ylab("Number of Horses") +ggtitle("Number of Colic Horses as a function of PCV")
+```
+
+The final graph is used to compare whether or not the horse received surgery for the colic and then how many of those horses ended up surviving. This graph is very intuative, in that, there is almost an even number of horses that lived on after having colic whether or not they had surgery. However, more horses died or had to be euthanized after they received surgery for the colic. This to me says that horses should receive supplemental medicine and care to help releave the distress instead of surgery. 
+
+```{r horse facet, echo=TRUE}
+hoc <- horsecolic %>% group_by(surgery) %>% count(outcome)
+hoc <- as.data.frame(hoc)
+ggplot(hoc, aes(outcome, n), na.rm=TRUE) + geom_col() +ylim(0,110) + facet_grid(. ~ surgery) +xlab("Outcome of horse") + ylab("Number of Horses") + ggtitle("Outcome of Colic Horses as a function Receiving Surgery")
+```
