@@ -323,4 +323,30 @@ Communicate   -       30  knitr document & slides (powerpoint->pdf)
 Slides & Presentation 10pts
 
 T-Test with R
+Compare 2 means of paired, and unpaired variables
+Box plot,   to see the 2 means
+
+Difference between two means
+                         T
+horses$temp |      T    [X]
+            |     [X]    |
+            +______|___________
+                 young old
+t.test( horses$temp~horses$age)
+t.test( young, old )
+paired
+t.test( childhorse, parenthorse)
+t.test( younghorsex, adultx )
+t.test( younghorse, mean=40 )
+
+PAIRED  
+Find mean of difference for each pair
+
+
+
+
+
+
+
+
 
