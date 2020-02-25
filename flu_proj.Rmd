@@ -1,0 +1,50 @@
+---
+title: Flu in the United States 2019
+---
+```
+url3 <- "https://raw.githubusercontent.com/lglang/Datasets/master/Flu2019-2020.csv"
+download.file(url3, "Flu2019")
+flu_df <- read_csv("Flu2019")
+
+ggplot(data = flu_df) + 
+  geom_point(mapping = aes(Week, ALL_INF)) +
+  labs(x = "Week in the year",
+       y = "Positive cases of Influenza")
+
+ggplot(data = flu_df)+
+  geom_boxplot(mapping = aes(Year, ALL_INF, group = Year))+
+  labs(x = "Year",
+       y = "Positive cases of Influenza")
+```
+The first graph is a basic point graph describing the trend of total cases of influenza A and B over the year. It shows a trend of cases starting relatively high, dropping through the mid year, and starting to rise again at the end of the year - consistent with the idea of a "flu season". The second graph is a box plot that shows the distribution of cases in 2019 and the start of 2020. It's interesting that the cases in 2020 are already higher than the cases at the same time for 2019.
+
+```
+flu_type <- flu_df %>% select(Week, INF_A, INF_B, ALL_INF, Year) %>% 
+  mutate(InfA_Per = (INF_A/ALL_INF)*100) %>% mutate(InfB_Per = (INF_B/ALL_INF)*100)
+
+fluA_mean <- flu_type %>% summarise(mean = mean(InfA_Per))
+fluB_mean <- flu_type %>% summarise(mean = mean(InfB_Per))
+
+ggplot(data = flu_type)+
+  geom_line(mapping = aes(Week, INF_A, color = "Influenza A")) +
+  geom_line(mapping = aes(Week, INF_B, color = "Influenza B")) +
+  labs(x = "Week in the year",
+       y = "Positive cases of Influenza A or B") +
+  facet_wrap(~Year)
+```
+This is a comparison of Influenza A and B between 2019 and 2020. The spike in cases of influenza B at the end of 2019 appears to be dropping at the beginning of 2020, but it is still much higher than the cases a year previously. Meanwhile, cases of influenza A are lower than they were, but it becomes more obvious as to how the combination of the two give a larger volume of flu cases in 2020 than 2019. I also calculated the mean percentage of flu A and B, though I have yet to utilize the data.
+
+```
+flu_subA <- flu_df %>% select(INF_A, AH1, AH1N12009, AH3, AH5, ANOTSUBTYPED,Week) 
+
+ggplot(data = flu_subA)+
+  geom_point(mapping = aes(Week, AH1, color = "AH1"))+
+  geom_point(mapping = aes(Week, AH1N12009, color = "AH1N12009"))+
+  geom_point(mapping = aes(Week, AH3, color = "AH3"))+
+  #geom_point(mapping = aes(Week, AH5, color = "AH5"))+
+  geom_point(mapping = aes(Week, ANOTSUBTYPED, color = "A, not subtyped"))+
+  geom_point(mapping = aes(Week, INF_A, color = "All influenza A"))
+  labs(x = "Week", y = "Confirmed cases of Influenza A")+
+  title("Confirmed cases of Influenza A by subtype")
+```
+The final graph is a comparison of all subtypes of Influenza A over the year, excluding subtype AH5, as there is no recorded data for AH5. It makes sense that the due to the large number of flu variants, the largest number of cases is A, not subtyped. All three subtypes of which there is nonzero data follow the same patterns as overall influenza A, rising quickly in the last few weeks of the year, and peaking about 10 weeks into the next.
