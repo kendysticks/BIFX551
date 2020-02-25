@@ -311,3 +311,16 @@ GGPLOT2
 g<-ggplot(data=diamonds, mapping=aes(x=carat, y=price,color=color))+geom_point()
 print(g)
 g<-ggplot(data=diamonds, mapping=aes(x=carat, y=price,color=color,size=carat))+geom_point()
+
+
+PROJECT GRADING
+Wrangle       -       10  automatically download from source. Provide the file used for data. (ETL) 
+  Extract Trace Load
+Explore       -       30  Summary Statistics
+                          Labelled, useful graph
+Model         -       20  
+Communicate   -       30  knitr document & slides (powerpoint->pdf)
+Slides & Presentation 10pts
+
+T-Test with R
+
