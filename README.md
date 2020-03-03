@@ -70,7 +70,7 @@ Feb 4 | Basic R: Importing .txt and .csv, using packages, plotting with base R |
 Feb 11 | R packages: knitr,tidyr/dplyr |[Chapter 5: R4DS](https://r4ds.had.co.nz/transform.html) & [Chapter 12: R4DS](https://r4ds.had.co.nz/tidy-data.html)| Find **Three** biological data sources that you can use for your first project. For each write about why you find the dataset interesting, anticipated difficulties, and a question you would like to answer. Perform a precursory exploration (types and amount of different variables and a simple graph) for each dataset and turn in an R Markdown document.
 Feb 18 | R packages: dplyr/tidyr, ggplot2 |[Chapter 3: R4DS](https://r4ds.had.co.nz/data-visualisation.html) |Start Project 1:Perform a fuller exploratory analysis on your dataset for your project. You should aggregate the data in some way with dplyr (if your dataset doesn't have any categorical variables, then make some) and make **four distinct figures** using ggplot2. Make sure you include: A plot with continuous variables, a plot with discrete variables, a plot where you use color or size to represent a quantity, a faceted plot. Include text between your plots to tell a story about the data. What insights do these plots give us into your data?
 Feb 25 | R packages: ggplot2 & datetimes| |
-Mar 3 | R packages: Unix environments and loops | |Project 1: Summary Report Due
+Mar 3 | R packages: Unix environments and loops |[Introduction and Package Structure](http://r-pkgs.had.co.nz/) and [Introduction to BASH](https://towardsdatascience.com/basics-of-bash-for-beginners-92e53a4c117a) |Project 1: Summary Report Due
 Mar 10 | Spring Recess | | 
 Mar 17 | Unix environments and running scripts | |
 Mar 24 | Making an R package | |
