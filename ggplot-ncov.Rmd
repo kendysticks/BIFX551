@@ -1,0 +1,115 @@
+---
+title: "ggplots-nCoV"
+author: "Daniel Vogel"
+date: "2/25/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Plotting Global nCoV Cases
+Perform a fuller exploratory analysis on your dataset for your project. 
+You should aggregate the data in some way with dplyr (if your dataset doesn't have any categorical variables, then make some) and make four distinct figures using ggplot2. Make sure you include:
+
+* A plot with continuous variables
+* A plot with discrete variables
+* A plot where you use color or size to represent a quantity
+* A faceted plot
+
+Include text between your plots to tell a story about the data. What insights do these plots give us into your data?
+
+```{r getdata, echo=FALSE, warning=FALSE,message=FALSE}
+library(dplyr)
+library(magrittr)
+library(lubridate)
+library(tidyverse)
+#library(viridis) # Gradient color
+#library(RColorBrewer) # Gradient color
+# time_series_2019_ncov_confirmed.csv 
+
+ncov_confirmed_df=read_csv("proj1.datasets/time_series_2019_ncov_confirmed.csv")
+ncov_df=read_csv("proj1.datasets/2019_nCoV_data.csv")
+# check the dates observed for duplicates.  If there are multiple observations on the same day, use the last
+dates_observed<-colnames(ncov_confirmed_df[5:ncol(ncov_confirmed_df)])
+```
+# Assumptions:
+Note:The original data had multiple observations for some dates, seen here.
+In these cases, we will only consider the latest observation for that date.
+This is valid since these are always increasing quantities.
+
+```{r aggdata, echo=FALSE, warning=FALSE,message=FALSE}
+print(dates_observed)
+## Date fields using this format
+## 01/24/2020 16:00:00
+##
+# aggregate Country/Region -> inside china , outside china.  Add a bolean column called "inchina"
+ncov_confirmed_df$InChina<-ncov_confirmed_df$`Country/Region`=="Mainland China"
+ncov_df$InChina<-(ncov_df$Country=="China"|ncov_df$Country=="Mainland China")
+#rename(ncov_df,"Province/State"="Region")
+names(ncov_df)[names(ncov_df)=="Province/State"] <- "City"
+names(ncov_df)[names(ncov_df)=="Last Update"] <- "DateTime"
+
+## add a column called "mdy" without the time
+ncov_df$YEARMD<-date(mdy_hms(ncov_df$Date))
+#ncov_df$DateOnly<-fast_strptime(ncov_df$mdy,'%m/%d/%Y')
+#
+# use dplyr summarise to aggregate
+InOut_df<-ncov_df %>% group_by(YEARMD,InChina) %>% summarise(Total=sum(Confirmed))
+print("Summary")
+print(InOut_df)
+```
+
+## Plots
+* Cases observed over the period.  Plots with contiuous variables
+
+```{r plot1, echo=FALSE}
+g<-InOut_df %>% filter( InChina == TRUE)  %>% ggplot(aes(YEARMD,Total, fill=InChina))+geom_area()+labs(x = "Observed Date")
+print(g)
+g<-InOut_df %>% filter( InChina == FALSE) %>% ggplot(aes(YEARMD,Total, fill=InChina))+geom_area()
+print(g)
+```
+* Plot with Discrete Variables
+Note: We have removed "Other" and "China" from this plot to show countries in the same scale.
+"Other" referred to patients on cruise ships who came from multiple countries.  "China" Totals
+are too high to plot on the same scale as other countries.
+
+We can see that the spread of nCoV follows the same curve inside and outside of China.  This also show that the curve is increasing slope during this period of spread.  A typical virus will spread increasingly and then slow down before fading away.  We can see that cases in China are starting to decrease in slope but outside are still on the rise.
+
+```{r plot2, echo=FALSE}
+data2<-ncov_df %>% filter(InChina == FALSE,YEARMD=="2020-02-13")  %>% 
+  group_by(Country) %>% 
+  summarise(Total=sum(Confirmed)) %>%
+  filter(Total > 10, Country != "Others") 
+
+data2<-data2[order(-data2$Total),]
+xlabel<-data2$Country
+ggplot(data2,aes(x=reorder(Country,-Total), y=Total,fill=Country))+geom_bar(stat="identity") + theme(legend.position = "bottom")+theme(text = element_text(size=15),
+        axis.text.x = element_text(angle=90, hjust=1))+labs(x = "Country Outside China")
+
+print(data2)
+
+```
+This graph shows that countries geographicaly close to China have the most cases so far.  This is to be expected since travel volumes are high between Wuhan and Hong Kong, Singaporte, and other neighbor countries.
+
+
+* A plot where you use color or size to represent a quantity
+This show also shows the high number of cases in Singapore and Hong Kong but is colored so it is visually clear.  
+```{r plot3, echo=FALSE}
+
+ggplot(data2,aes(x=reorder(Country,-Total), y=Total, fill=Total))+geom_bar(stat="identity") +    theme(text = element_text(size=15),
+        axis.text.x = element_text(angle=90, hjust=1))+ labs(x = "Country Outside China")
+print(data2)
+```
+
+* A faceted plot
+
+This plot shows that the increase in each of these countries is following the same pattern during this early stage of the virus spread.
+
+```{r plot4, echo=FALSE}
+ncov_df %>% filter(Country %in% data2$Country[1:5]) %>% 
+  ggplot(aes(x=YEARMD,y=Confirmed, fill=Country)) + geom_area() + labs(x = "Observed Date") + facet_grid(~Country )+theme(text = element_text(size=15),
+        axis.text.x = element_text(angle=90, hjust=1))+ labs(x = "Country Outside China")
+```
+
