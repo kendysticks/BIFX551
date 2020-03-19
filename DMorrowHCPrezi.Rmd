@@ -1,0 +1,92 @@
+---
+title: "Horse Colic Project"
+author: Destinee Morrow
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(dplyr)
+library(ggplot2)
+library(tidyverse)
+```
+
+## Background
+Colic - pain in the abdomen of the horse.
+
+Various types of horse colic: 
+
+- impaction colic due to the type of feed and the eating process 
+- gas colic that is built up over time
+    - can lead to more serve colic, like abdomen dystension and colon shift
+    
+All of these, can potentially lead to death if the horse if not treated. Horse colic is very common and understanding the severity and needed procedures is important.
+
+
+## Data: {.smaller}
+```{r Horse Colic, echo=FALSE}
+setwd("/Users/destinee/Documents/Programming")
+horsecolic <- read.csv("horsecolic.csv")
+```
+
+```{r table, echo=FALSE}
+head(horsecolic)
+```
+
+## Packed Cell Volume
+
+```{r horse PCV, echo=FALSE}
+ggplot(horsecolic %>% drop_na(packed_cell_volume), aes(packed_cell_volume)) + geom_density( aes(fill = packed_cell_volume < 40), alpha=0.5) + scale_fill_manual(values = c("blue","red"), 0.2) + xlab("Packed Cell Volume") +ylab("Number of Horses") +ggtitle("Number of Colic Horses as a function of PCV")
+```
+
+
+## PCV T-test
+```{r ttest, echo=FALSE}
+t.test(horsecolic$packed_cell_volume ~ horsecolic$surgery)
+```
+Fail to reject the null hypothesis. 
+So... If PCV cant tell us whether or not the horse will have to have surgery.
+The question is...
+Should the horse ultimately have surgery or not?
+
+## Surgery
+ 
+```{r horse facet, echo=FALSE}
+horsecolic[horsecolic$outcome=='euthanized', "outcome2"] <- "died"
+horsecolic[horsecolic$outcome=='lived', "outcome2"] <- "lived"
+horsecolic[horsecolic$outcome=='died', "outcome2"] <- "died" 
+hoc <- horsecolic %>% group_by(surgery) %>% count(outcome)
+hoc <- as.data.frame(hoc)
+ggplot(hoc, aes(outcome, n)) + geom_col(aes(fill=outcome)) +ylim(0,110) + facet_grid(. ~ surgery) +xlab("Outcome/Survival of Horses") + ylab("Number of Horses") + ggtitle("Outcome of Colic Horses as a function of Receiving Surgery")
+```
+
+
+## Surgery 2
+
+```{r, echo=FALSE}
+hoc <- horsecolic %>% group_by(surgery) %>% count(outcome2)
+hoc <- as.data.frame(hoc)
+ggplot(hoc, aes(outcome2, n), na.rm=TRUE) + geom_col(aes(fill=outcome2)) +ylim(0,130) + facet_grid(. ~ surgery) +xlab("Outcome/Survival of Horses") + ylab("Number of Horses") + ggtitle("Outcome of Colic Horses as a function of Receiving Surgery")
+```
+
+So should we have a horse undergo surgery to fix the colic?
+We will use a Chi-squared Test to determine that answer.
+
+## Chi-Squared
+
+```{r chisq, echo=FALSE}
+tbl <- table(horsecolic$surgery, horsecolic$outcome)
+chisq.test(tbl)
+```
+
+```{r chisqlive, echo=FALSE}
+tbl2 <- table(horsecolic$surgery, horsecolic$outcome2)
+chisq.test(tbl2)
+```
+
+## Conclusion
+The Chi-Squared tests are based on a null hypothesis of surgery and survival being independent. 
+The p values of 0.004424 and 0.005016 are significantly smaller than that of the 0.05 alpha. Thus meaning, that we reject the null hypothesis that whether a horse has surgery or not is independent of whether the horse survives from colic. 
+
+These two variables are dependent and so, no, we should not perform surgery on a horse that is experiencing colic because it is more likely to die than survive.
+
