@@ -73,11 +73,11 @@ Feb 25 | R packages: ggplot2 & datetimes| |
 Mar 3 | R packages: Unix environments and loops |[Introduction and Package Structure](http://r-pkgs.had.co.nz/) and [Introduction to BASH](https://towardsdatascience.com/basics-of-bash-for-beginners-92e53a4c117a) |Project 1: Summary Report Due
 Mar 10 | Spring Recess | | 
 Mar 17 | Spring Recess | |
-Mar 24 | Unix environments and shell scripts |grep assignment |
-Mar 31 | Functions, Parts of an R package |Github report | 
+Mar 24 | Unix environments and shell scripts | |grep assignment
+Mar 31 | Functions, Parts of an R package | | Github report
 Apr 7 | Regression analysis with R: linear and logistic| |Project 2: Reproducible Report 2 Due
-Apr 14 | The frontend: R shiny|Minimal R-shiny app |
-Apr 21 | The frontend: R shiny |Call a function |
-Apr 28 | The frontend: R  shiny |Project Progress check |
+Apr 14 | The frontend: R shiny| |Minimal R-shiny app
+Apr 21 | The frontend: R shiny | |Call a function
+Apr 28 | The frontend: R  shiny | |Project Progress check
 May 5 | Share projects| | Project 3: Shiny app Due
 
