@@ -7,7 +7,9 @@ This class provides an introduction to programming for bioinformatics, with a fo
 
 -	Instructor: Chris Malec, PhD
 -  Email: cmalec@hood.edu
--	Office Hours: In-person office hours will be held Wednesdays immediately after class. Appointments can be made for other times as needed.
+-  Instruction: Via Zoom [Join Meeting URL](https://wse.zoom.us/j/564883860)
+-  Peer-interaction: The Hood Bio-informatics program has its own slack, and a channel for this class [here](https://app.slack.com/client/TNMM5SFRP/C01097J749M)
+-	Office Hours: Zoom office hours will be held Wednesdays immediately after class. Appointments can be made for other times as needed.
 -	Prerequisites: BIFX 501 or BIFX 502
 -	Textbooks:
     * [R for Data Science](https://r4ds.had.co.nz/index.html) by Garrett Grolemund and Hadley Whickam
@@ -30,7 +32,7 @@ On completion of this course, students should be comfortable with the following:
 - In-class participation (25%): Engaging during class with the exercises and collaborating well with fellow students. **This will also include a two short one-on-one check-ins with the instructor.**
 -	Course Projects (50%): There will be three larger projects that apply the individual concepts covered in class, homework, and readings.
     - Create a reproducible report from a biological dataset (20%) 
-    - Write an  R package (15%)
+    - Create an automated reproducible report (15%)
     - Create an app with R shiny (15%).
 
 - Attendance is not an explicit part of your grade, however your attendance is critical to your success.
@@ -75,9 +77,9 @@ Mar 10 | Spring Recess | |
 Mar 17 | Spring Recess | |
 Mar 24 | Unix environments and shell scripts | |grep assignment
 Mar 31 | Functions, Parts of an R package | | Github report
-Apr 7 | Regression analysis with R: linear and logistic| |Project 2: Reproducible Report 2 Due
-Apr 14 | The frontend: R shiny| |Minimal R-shiny app
-Apr 21 | The frontend: R shiny | |Call a function
+Apr 7 | Regression analysis with R: linear and logistic|[Linear Regression](http://r-statistics.co/Linear-Regression.html), [Logistic Regression](http://r-statistics.co/Logistic-Regression-With-R.html) |Project 2: Reproducible Report 2 Due
+Apr 14 | The frontend: R shiny|[RStudio](https://shiny.rstudio.com/) |Minimal R-shiny app
+Apr 21 | The frontend: R shiny |[Chapter 11: HOPR](https://rstudio-education.github.io/hopr/loops.html) |Call a function
 Apr 28 | The frontend: R  shiny | |Project Progress check
 May 5 | Share projects| | Project 3: Shiny app Due
 
