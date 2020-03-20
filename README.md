@@ -72,11 +72,11 @@ Feb 18 | R packages: dplyr/tidyr, ggplot2 |[Chapter 3: R4DS](https://r4ds.had.co
 Feb 25 | R packages: ggplot2 & datetimes| |
 Mar 3 | R packages: Unix environments and loops |[Introduction and Package Structure](http://r-pkgs.had.co.nz/) and [Introduction to BASH](https://towardsdatascience.com/basics-of-bash-for-beginners-92e53a4c117a) |Project 1: Summary Report Due
 Mar 10 | Spring Recess | | 
-Mar 17 | Unix environments and running scripts | |
-Mar 24 | Making an R package | |
-Mar 31 | Making an R package | | 
-Apr 7 | Regression analysis with R, linear regression | |Project 2: R package Due
-Apr 14 | Regression analysis with R, logistic regression | |
+Mar 17 | Spring Recess | |
+Mar 24 | Unix environments and shell scripts | |
+Mar 31 | Parts of an R package | | 
+Apr 7 | Regression analysis with R: linear and logistic| |Project 2: Reproducible Report 2 Due
+Apr 14 | The frontend: R shiny| |
 Apr 21 | The frontend: R shiny | |
 Apr 28 | The frontend: R  shiny | |
 May 5 | Share projects| | Project 3: Shiny app Due
