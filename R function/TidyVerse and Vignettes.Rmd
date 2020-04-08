@@ -1,0 +1,37 @@
+---
+title: "Tidy"
+author: "Nick Kendrick"
+date: "4/7/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+## TidyVerse
+I decided to look at the tidyverse test for "drop_na".
+The first test on this github .R file is below:
+
+test_that("works with list-cols", {
+  df <- tibble(x = list(1L, NULL, 3L), y = c(1L, 2L, NA))
+  rs <- drop_na(df)
+
+  expect_identical(rs, tibble(x = list(1L), y = 1L))
+})
+
+  - This test is a little complicated, but "work with list-cols" creates a data frame that contains lists as x variables and y variables. rs variable drops all NA values and the expected_identical combines lists of 1L from both X and y variables. 
+
+The second test is "empty call drops every row":
+
+test_that("empty call drops every row", {
+  df <- tibble(x = c(1, 2, NA), y = c("a", NA, "b"))
+  exp <- tibble(x = c(1), y = c("a"))
+  res <- tidyr::drop_na(df)
+  expect_equal(res, exp)
+})
+
+  - This testing is self- explanatory. The first variable sets a table that contains an NA values.The second variable creates a table that contain no NA values. Using the removal of NA or "drop_na test on the first table, both variables should now be equal, meaning  rows were dropped and NA's were removed.
+
+## Vignettes
+
+Vignettes are created in a seperate file types .Rd and is different from what they used as .rmd. Vignettes are used to explain how a package should preform, by giving it examples, a brief summary of what the function will and provide variables that will be used.
