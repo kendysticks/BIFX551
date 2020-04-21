@@ -15,7 +15,7 @@ ui <- fluidPage(
     titlePanel("My Shiny App"),
     sidebarPanel(
         helpText('Create a boxplot based on the \'iris\'dataset'),
-        selectInput('p', 'Choose the first variable',
+        selectInput('p', 'Choose the variable to display',
                     choices = list(
                         'Sepal Length' = 'Sepal.Length',
                         'Sepel Width' = 'Sepal.Width',
