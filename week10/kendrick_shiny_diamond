@@ -1,0 +1,95 @@
+library(shiny)
+library(shinyWidgets)
+library(ggplot2)  # for the diamonds dataset
+library(dplyr)
+library(DT)
+
+
+data(diamonds)
+red_diamonds <- select(diamonds, 1:4,7)
+
+if (interactive()) {
+  ui <- fluidPage(
+    title = "Diamond Pricing",
+    sidebarLayout(
+      sidebarPanel(
+        conditionalPanel(
+          'input.dataset === "diamonds"',
+          checkboxGroupInput("show_vars", "Columns in diamonds to show:",
+                             names(red_diamonds), selected = names(red_diamonds)),
+          
+          sliderInput("carat", "CARAT:",
+                      min = min(red_diamonds$carat ) , max = max(red_diamonds$carat),
+                      value = c(1.5,4)),
+          
+                    br(),
+          sliderTextInput(
+            inputId = "cut",
+            label = "CUT:",
+            choices = c("Fair", "Good", "Very Good", "Ideal", "Premium") ,
+            selected = c("Good", "Ideal"),
+            grid = TRUE,
+            dragRange = TRUE
+          ),
+
+         br(),
+        sliderTextInput(
+           inputId = "color",
+            label = "COLOR:",
+            choices = c("J", "I", "H", "G", "F", "E", "D") ,
+            selected = c("I", "E"),
+            grid = TRUE,
+            dragRange = TRUE
+          ),
+          
+          
+          br(),
+         sliderTextInput(
+            inputId = "clarity",
+            label = "CLARITY:",
+            choices = c( "I1", "SI1", "SI2", "VS1", "VS2", "VVS1", "VVS2", "IF") ,
+            selected = c("SI1", "VVS1"),
+            grid = TRUE,
+            dragRange = TRUE
+          ),
+          
+          sliderInput("price", "PRICE:",
+                      min = min(red_diamonds$price) , max = max(red_diamonds$price),
+                      value = c(5000,14000))
+        )
+      ),
+      mainPanel(
+       tabsetPanel(
+       id = 'dataset',
+       tabPanel("diamonds", DT::dataTableOutput("mytable"), plotOutput("myPlot"))
+         )
+      )
+    )
+  )
+  
+  server <- function(input, output) {
+    
+    filtered <- reactive({
+      filter(red_diamonds, diamonds$price >= input$price[1] & diamonds$price <= input$price[2], 
+             diamonds$carat >= input$carat[1] & diamonds$carat <= input$carat[2],
+             diamonds$clarity %in% input$clarity, diamonds$color %in% input$color, 
+             diamonds$cut %in% input$cut )
+    })
+
+    output$mytable <- DT::renderDataTable({
+      datatable(
+        filtered(),
+      )
+    })
+    
+    # output$myPlot <- renderPlot({
+    #   bins <- seq(min(diamonds$price), max(diamonds$price), length.out = input$price + 1)
+    # 
+    #   hist(diamonds$price, breaks = bins, col = "#75AADB", border = "white",
+    #        xlab = "Diamond price",
+    #        main = "Price per Carat")
+    # 
+    # })
+  }
+}
+shinyApp(ui, server)
