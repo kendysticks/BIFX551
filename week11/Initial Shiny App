@@ -1,0 +1,106 @@
+require(shiny)
+require(ggplot2)  
+require(dplyr)
+
+## Only run examples in interactive R sessions
+
+if (interactive()) {
+  
+  UI <- fluidPage(
+    sidebarLayout(
+      sidebarPanel(
+        fileInput(inputId = "datafile", "Choose Data File", placeholder = "No file selected", 
+                  accept = c(
+                    "text/csv",
+                    "text/comma-separated-values,text/plain",
+                    ".csv", ".xlsx"),
+        ),
+       
+        checkboxInput("header", "Header", TRUE),
+        tags$hr(),
+ #       varSelectInput("variables", "Variable:", input$datafile, multiple = TRUE),
+        tags$hr(),
+        selectInput(inputId = "var1", label = "Variable 1", choices = ""),
+        selectInput(inputId = "var2", label = "Variable 2", choices = ""),
+        tags$hr(),
+#        checkboxGroupInput(inputId = "var3","Data Analysis Plots", 
+#                     choices = list("sample plot", " Control Tracking", "LLOQ Tracking", "ULOQ Tracking")),
+        radioButtons(inputId = "var4", label = "Select the file type", choices = list("png", "pdf")),
+        downloadButton(outputId = "down", label = "Download the plot")
+        
+        
+      ),
+      mainPanel(
+        plotOutput("plot")
+#        tableOutput("contents"),
+        
+        
+      )
+    )
+  )
+  
+  server <- function(input, output, session) {
+    #increases the max upload file to 30MB
+    options(shiny.maxRequestSize=30*1024^2)
+  
+    # output$contents <- renderTable({
+    #   if (length(input$variables) == 0) return(input$datafile)
+    #   input$datafile %>% dplyr::select(!!!input$variables)
+    # }, rownames = TRUE)
+    
+          contentsread <- reactive({
+        inFile <- input$datafile
+        if (is.null(inFile))
+          return(NULL)
+        read.csv(inFile$datapath)
+          })
+      observe({
+        updateSelectInput(session, "var1", choices = names(contentsread()))
+        updateSelectInput(session, "var2", choices = names(contentsread()))
+      })
+  
+ #  # x contains all the observations of the x variable selected by the user. X is a reactive function
+ #  x <- reactive({
+ #    contentsread[,as.numeric(input$var1)]
+ #  })
+ #  # x contains all the observations of the y variable selected by the user. Y is a reactive function
+ #  y <- reactive({
+ #    contentsread[,as.numeric(input$var2)]
+ #    
+ #  })
+ #  # xl contains the x variable or column name of the uploaded dataset selected by the user
+ #  xl <- reactive({
+ #    names(contentsread[as.numeric(input$var1)])
+ #  })
+ #  # yl contains the y variable or column name of the uploaded dataset selected by the user
+ #  yl <- reactive({
+ #    names(contentsread[as.numeric(input$var2)])
+ #  })
+ # })
+ #  # render the plot so could be used to display the plot in the mainPanel
+ #  output$plot <- renderPlot({
+ #    inFile=contentsread()
+ #    if (!is.null(contentsread))
+ #    plot(x=x(), y=y(), main = "Data File", xlab = xl(), ylab = yl())
+ #    
+ #  
+ #  
+ #  # downloadHandler contains 2 arguments as functions, namely filename, content
+ #  output$down <- downloadHandler(
+ #    filename =  function() {
+ #      paste(contentsread, input$var4, sep=".")
+ #    },
+ #    # content is a function with argument file. content writes the plot to the device
+ #    content = function(file) {
+ #      if(input$var4 == "png")
+ #        png(file) # open the png device
+ #      else
+ #        pdf(file) # open the pdf device
+ #      plot(x=x(), y=y(), main = "Data File plot", xlab = xl(), ylab = yl()) # draw the plot
+ #      dev.off()  # turn the device off
+ #      })
+ #  }) 
+   }
+  
+  shinyApp(UI, server)
+}
