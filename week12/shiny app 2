@@ -1,0 +1,118 @@
+require(shiny)
+require(dplyr)
+require(stringr)
+require(drc)
+require(dr4pl)
+require(ggplot2)
+
+#4pl function
+
+
+
+
+ui <- shinyUI(fluidPage(
+  titlePanel("Calibration Curve"),
+  tabsetPanel(
+    tabPanel("Upload File",
+             titlePanel("Uploading Files"),
+             sidebarLayout(
+               sidebarPanel(
+                 fileInput('file1', 'Choose Data File', #ability to upload csv and excel file 
+                           accept=c( "text/csv",
+                                     "text/comma-separated-values,text/plain",
+                                     ".csv", ".xlsx")),
+                 
+                 tags$br(),
+                 checkboxInput('header', 'Header', TRUE), #header feature 
+                 downloadButton('download',"Download the data"), #Saves graph
+               ),
+               mainPanel(
+                 tableOutput('contents') #contents is the variable name for the 1st table
+               )
+             )
+    ),
+    tabPanel("Calibration Curve",
+             pageWithSidebar(
+               headerPanel('Calibration Curve'),
+               sidebarPanel(
+                 
+                 # "Empty inputs" - they will be updated after the data is uploaded
+                 textInput("title","Enter Title for Graph",""),
+                 selectInput('xcol', 'X Variable', ""), # selected input for x variable
+                 selectInput('ycol', 'Y Variable', "", selected = ""), # selected input for y variable
+                 checkboxInput('filterC', 'Filter by Calibration Curve', TRUE), # checkbox for calibration curve 
+                 checkboxInput('filterS', 'Filter by Samples', FALSE), # checkbox for Samples 
+                 h5("To View Sample you must select Assay for X variable"),
+                 # checkboxInput("log","Change plot to log", FALSE), # log function
+                 radioButtons("Colour","Select The Colour",list("Green","Blue","Red","Black"),
+                              selected = "Blue"),
+                 
+                       ),
+               mainPanel(
+                 plotOutput('MyPlot'), #MyPlot is the variable name for the plot
+                 tableOutput('contents2') #contents2  is the variable name for the 2nd table
+               
+                 )
+             )
+    )
+    
+  )
+)
+)
+
+server <- shinyServer(function(input, output, session) {
+  # added "session" because updateSelectInput requires it
+  
+  
+  data <- reactive({ 
+    req(input$file1) ## ?req #  require that the input is available
+    
+    inFile <- input$file1 
+    #reading csv file in under variable df
+    df <- read.csv(inFile$datapath, header = input$header)
+
+
+   #updateSelection input for x and y variables for table and plot 
+    updateSelectInput(session, inputId = 'xcol', label = 'X Variable',
+                      choices = names(df), selected = names(df)[3])
+    updateSelectInput(session, inputId = 'ycol', label = 'Y Variable',
+                      choices = names(df), selected = names(df)[5])
+
+    return(df)
+  })
+  #renders a table off of entire sample set
+  output$contents <- renderTable({
+    data()
+  })
+  #save table in 1st tab
+  output$download <- downloadHandler(
+    filename = function(){"thename.csv"}, 
+    content = function(fname){
+      write.csv(data(), fname)
+    }
+  )
+  #if statement to filter data based off of checkbox inputs for Table output for plot 
+  output$contents2 <- renderTable({
+ if(input$filterC == TRUE) {
+    data() %>% filter(grepl("Cal", Sample)) %>% distinct(data,Sample, .keep_all = TRUE)
+  } else if(input$filterS == TRUE) {
+    data() %>% filter(!grepl("Cal|QC", Sample)) %>% distinct(data,Sample, .keep_all = TRUE)
+  } else {
+    data()
+  }})
+ #if statement to filter data based off of checkbox inputs for calibration curve and sample plot 
+  output$MyPlot <- renderPlot({
+  x <-if(input$filterC == TRUE) {
+      data() %>% filter(grepl("Cal", Sample)) %>% distinct(data,Sample, .keep_all = TRUE)
+    } else if(input$filterS == TRUE) {
+      data() %>% filter(!grepl("Cal|QC", Sample)) %>% distinct(data,Sample, .keep_all = TRUE)
+    } else {
+      data()
+    }
+      #Create a plot with the input values for x and y
+        x <- x[, c(input$xcol, input$ycol)]
+        plot(x, col = input$Colour, main = input$title)
+  })
+})
+
+shinyApp(ui, server)
